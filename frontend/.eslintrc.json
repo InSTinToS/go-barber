@@ -36,6 +36,7 @@
     }
   },
   "rules": {
+    "@typescript-eslint/ban-types": "off", //temporaly
     "prettier/prettier": "error",
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": "off",
