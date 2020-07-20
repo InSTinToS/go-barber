@@ -9,7 +9,7 @@ import { FiLogIn, FiLock, FiMail } from 'react-icons/fi'
 import getValidationErrors from 'utils/getValidationErrors'
 import { useAuth } from 'hooks/Auth'
 import { useToast } from 'hooks/Toast'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Style, Content, Background, AnimationContent } from './styles'
 
 interface LoginData {
@@ -21,6 +21,7 @@ const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null)
   const { login } = useAuth()
   const { addToast } = useToast()
+  const history = useHistory()
 
   const onFormSubmit = useCallback(
     async (data: LoginData) => {
@@ -42,6 +43,8 @@ const Login: React.FC = () => {
           email: data.email,
           password: data.password,
         })
+
+        history.push('/dashboard')
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationErrors(error)
@@ -56,7 +59,7 @@ const Login: React.FC = () => {
         })
       }
     },
-    [login, addToast]
+    [login, addToast, history]
   )
 
   return (

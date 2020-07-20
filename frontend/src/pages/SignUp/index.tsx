@@ -7,32 +7,64 @@ import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
 import getValidationErrors from 'utils/getValidationErrors'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import api from 'services/api'
+import { useToast } from 'hooks/Toast'
 import { Style, Content, Background, AnimationContent } from './styles'
+
+interface SignUpFormData {
+  name: string
+  email: string
+  password: string
+}
 
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null)
+  const { addToast } = useToast()
+  const history = useHistory()
 
-  const onFormSubmit = useCallback(async (data: object) => {
-    try {
-      formRef.current?.setErrors({})
+  const onFormSubmit = useCallback(
+    async (data: SignUpFormData) => {
+      try {
+        formRef.current?.setErrors({})
 
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Nome obrigatório'),
-        email: Yup.string()
-          .email('Digite um email válido')
-          .required('Email obrigatório'),
-        password: Yup.string().min(6, 'Minimo de 6 digitos'),
-      })
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatório'),
+          email: Yup.string()
+            .email('Digite um email válido')
+            .required('Email obrigatório'),
+          password: Yup.string().min(6, 'Minimo de 6 digitos'),
+        })
 
-      await schema.validate(data, {
-        abortEarly: false,
-      })
-    } catch (error) {
-      const errors = getValidationErrors(error)
-      formRef.current?.setErrors(errors)
-    }
-  }, [])
+        await schema.validate(data, {
+          abortEarly: false,
+        })
+
+        await api.post('/users', data)
+
+        addToast({
+          type: 'success',
+          title: 'Cadastro completo',
+          description: 'Você já pode fazer seu logon',
+        })
+
+        history.push('/')
+      } catch (error) {
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error)
+          formRef.current?.setErrors(errors)
+          return
+        }
+
+        addToast({
+          type: 'error',
+          title: 'Error no cadastro',
+          description: 'Ocorreu um erro no cadastro, tente novamente',
+        })
+      }
+    },
+    [history, addToast]
+  )
 
   return (
     <Style>
