@@ -7,12 +7,19 @@ import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
 import { FiLogIn, FiLock, FiMail } from 'react-icons/fi'
 import getValidationErrors from 'utils/getValidationErrors'
+import { useAuth } from 'context/AuthContext'
 import { Style, Content, Background } from './styles'
+
+interface LoginData {
+  email: string
+  password: string
+}
 
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null)
+  const { login } = useAuth()
 
-  const onFormSubmit = useCallback(async (data: object) => {
+  const onFormSubmit = useCallback(async (data: LoginData) => {
     try {
       formRef.current?.setErrors({})
 
@@ -25,6 +32,11 @@ const Login: React.FC = () => {
 
       await schema.validate(data, {
         abortEarly: false,
+      })
+
+      login({
+        email: data.email,
+        password: data.password,
       })
     } catch (error) {
       const errors = getValidationErrors(error)
