@@ -7,7 +7,8 @@ import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
 import getValidationErrors from 'utils/getValidationErrors'
-import { Style, Content, Background } from './styles'
+import { Link } from 'react-router-dom'
+import { Style, Content, Background, AnimationContent } from './styles'
 
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null)
@@ -37,30 +38,32 @@ const SignUp: React.FC = () => {
     <Style>
       <Background />
       <Content>
-        <img src={logo} alt='Go Barber' />
-        <Form
-          ref={formRef}
-          initialData={{ name: 'Miguel Andrade' }}
-          onSubmit={onFormSubmit}
-        >
-          <h1>Faça seu cadastro</h1>
+        <AnimationContent>
+          <img src={logo} alt='Go Barber' />
+          <Form
+            ref={formRef}
+            initialData={{ name: 'Miguel Andrade' }}
+            onSubmit={onFormSubmit}
+          >
+            <h1>Faça seu cadastro</h1>
 
-          <Input name='name' placeholder='E-mail' icon={FiUser} />
-          <Input name='email' placeholder='E-mail' icon={FiMail} />
-          <Input
-            name='password'
-            type='password'
-            placeholder='Senha'
-            icon={FiLock}
-          />
+            <Input name='name' placeholder='E-mail' icon={FiUser} />
+            <Input name='email' placeholder='E-mail' icon={FiMail} />
+            <Input
+              name='password'
+              type='password'
+              placeholder='Senha'
+              icon={FiLock}
+            />
 
-          <Button type='submit'>Cadastrar</Button>
-        </Form>
+            <Button type='submit'>Cadastrar</Button>
+          </Form>
 
-        <a href='create'>
-          <FiArrowLeft />
-          Voltar para logon
-        </a>
+          <Link to='/'>
+            <FiArrowLeft />
+            Voltar para logon
+          </Link>
+        </AnimationContent>
       </Content>
     </Style>
   )

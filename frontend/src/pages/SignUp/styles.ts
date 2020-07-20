@@ -1,11 +1,26 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import signUpBackgroundImg from 'assets/sign-up-background.png'
 import { shade } from 'polished'
 
+const appearFromRight = keyframes`
+  from{
+    opacity: 0;
+    transform: translateX(50px);
+  } to {
+    opacity: 1;
+    transform: translateX(0px)
+  }
+`
 export const Style = styled.div`
   height: 100vh;
   display: flex;
   align-items: stretch;
+`
+
+export const Background = styled.div`
+  flex: 1;
+  background: url(${signUpBackgroundImg}) no-repeat center;
+  background-size: cover;
 `
 
 export const Content = styled.div`
@@ -15,6 +30,14 @@ export const Content = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 700px;
+`
+
+export const AnimationContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  animation: ${appearFromRight} 1s;
 
   form {
     text-align: center;
@@ -39,7 +62,7 @@ export const Content = styled.div`
   }
 
   & > a {
-    color: #f4ede8;
+    color: #ff9000;
     display: block;
     margin-top: 24px;
     text-decoration: none;
@@ -48,17 +71,11 @@ export const Content = styled.div`
     transition: color 0.2s;
 
     &:hover {
-      color: ${shade(0.2, '#f4ede8')};
+      color: ${shade(0.2, '#ff9000')};
     }
 
     svg {
       margin-right: 16px;
     }
   }
-`
-
-export const Background = styled.div`
-  flex: 1;
-  background: url(${signUpBackgroundImg}) no-repeat center;
-  background-size: cover;
 `
