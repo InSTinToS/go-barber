@@ -7,7 +7,8 @@ import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
 import { FiLogIn, FiLock, FiMail } from 'react-icons/fi'
 import getValidationErrors from 'utils/getValidationErrors'
-import { useAuth } from 'context/AuthContext'
+import { useAuth } from 'hooks/Auth'
+import { useToast } from 'hooks/Toast'
 import { Style, Content, Background } from './styles'
 
 interface LoginData {
@@ -18,31 +19,43 @@ interface LoginData {
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null)
   const { login } = useAuth()
+  const { addToast } = useToast()
 
-  const onFormSubmit = useCallback(async (data: LoginData) => {
-    try {
-      formRef.current?.setErrors({})
+  const onFormSubmit = useCallback(
+    async (data: LoginData) => {
+      try {
+        formRef.current?.setErrors({})
 
-      const schema = Yup.object().shape({
-        email: Yup.string()
-          .email('Digite um email válido')
-          .required('Email obrigatório'),
-        password: Yup.string().required('Senha obrigatória'),
-      })
+        const schema = Yup.object().shape({
+          email: Yup.string()
+            .email('Digite um email válido')
+            .required('Email obrigatório'),
+          password: Yup.string().required('Senha obrigatória'),
+        })
 
-      await schema.validate(data, {
-        abortEarly: false,
-      })
+        await schema.validate(data, {
+          abortEarly: false,
+        })
 
-      login({
-        email: data.email,
-        password: data.password,
-      })
-    } catch (error) {
-      const errors = getValidationErrors(error)
-      formRef.current?.setErrors(errors)
-    }
-  }, [])
+        await login({
+          email: data.email,
+          password: data.password,
+        })
+      } catch (error) {
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error)
+          formRef.current?.setErrors(errors)
+        }
+
+        addToast({
+          type: 'error',
+          title: 'Error na autenticação',
+          description: 'Ocorreu um erro no login',
+        })
+      }
+    },
+    [login, addToast]
+  )
 
   return (
     <Style>
