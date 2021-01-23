@@ -1,6 +1,7 @@
-import styled, { keyframes } from 'styled-components'
 import signUpBackgroundImg from 'assets/sign-up-background.png'
+
 import { shade } from 'polished'
+import styled, { keyframes } from 'styled-components'
 
 const appearFromRight = keyframes`
   from{

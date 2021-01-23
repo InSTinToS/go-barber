@@ -1,5 +1,6 @@
-import styled, { css } from 'styled-components'
 import Tooltip from 'components/Tooltip/index'
+
+import styled, { css } from 'styled-components'
 
 interface StyleProps {
   isFocused: boolean
@@ -8,18 +9,30 @@ interface StyleProps {
 }
 
 export const Style = styled.div<StyleProps>`
-  background: #232129;
-  border-radius: 10px;
-  padding: 16px;
-  width: 100%;
-  border: 2px solid #232129;
-  color: #606060;
-
   display: flex;
   align-items: center;
 
+  border-radius: 10px;
+  padding: 16px;
+  width: 100%;
+
+  border: 2px solid #232129;
+  background: #232129;
+  color: #606060;
+
   & + div {
     margin-top: 8px;
+  }
+
+  input {
+    color: #f4ede8;
+    flex: 1;
+    background: transparent;
+    border: 0;
+  }
+
+  svg {
+    margin-right: 16px;
   }
 
   ${({ isErrored }) =>
@@ -40,21 +53,6 @@ export const Style = styled.div<StyleProps>`
     css`
       color: #ff9000;
     `}
-
-  input {
-    color: #f4ede8;
-    flex: 1;
-    background: transparent;
-    border: 0;
-
-    &::placeholder {
-      color: #606060;
-    }
-  }
-
-  svg {
-    margin-right: 16px;
-  }
 `
 
 export const Error = styled(Tooltip)`

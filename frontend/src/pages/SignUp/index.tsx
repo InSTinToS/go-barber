@@ -1,16 +1,21 @@
 import React, { useCallback, useRef } from 'react'
+import { AnimationContent, Background, Content, Style } from './styles'
+
+import getValidationErrors from 'utils/getValidationErrors'
+
+import api from 'services/api'
+
 import logo from 'assets/logo.svg'
+
 import Button from 'components/Button'
 import Input from 'components/Input'
-import { FiArrowLeft, FiLock, FiUser, FiMail } from 'react-icons/fi'
-import { Form } from '@unform/web'
+
 import { FormHandles } from '@unform/core'
-import * as Yup from 'yup'
-import getValidationErrors from 'utils/getValidationErrors'
-import { Link, useHistory } from 'react-router-dom'
-import api from 'services/api'
+import { Form } from '@unform/web'
 import { useToast } from 'hooks/Toast'
-import { Style, Content, Background, AnimationContent } from './styles'
+import { FiArrowLeft, FiLock, FiMail, FiUser } from 'react-icons/fi'
+import { Link, useHistory } from 'react-router-dom'
+import * as Yup from 'yup'
 
 interface SignUpFormData {
   name: string
@@ -30,9 +35,7 @@ const SignUp: React.FC = () => {
 
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
-          email: Yup.string()
-            .email('Digite um email válido')
-            .required('Email obrigatório'),
+          email: Yup.string().email('Digite um email válido').required('Email obrigatório'),
           password: Yup.string().min(6, 'Minimo de 6 digitos'),
         })
 
@@ -72,21 +75,12 @@ const SignUp: React.FC = () => {
       <Content>
         <AnimationContent>
           <img src={logo} alt='Go Barber' />
-          <Form
-            ref={formRef}
-            initialData={{ name: 'Miguel Andrade' }}
-            onSubmit={onFormSubmit}
-          >
+          <Form ref={formRef} initialData={{ name: 'Miguel Andrade' }} onSubmit={onFormSubmit}>
             <h1>Faça seu cadastro</h1>
 
             <Input name='name' placeholder='E-mail' icon={FiUser} />
             <Input name='email' placeholder='E-mail' icon={FiMail} />
-            <Input
-              name='password'
-              type='password'
-              placeholder='Senha'
-              icon={FiLock}
-            />
+            <Input name='password' type='password' placeholder='Senha' icon={FiLock} />
 
             <Button type='submit'>Cadastrar</Button>
           </Form>

@@ -1,16 +1,20 @@
-import React, { useRef, useCallback } from 'react'
+import React, { useCallback, useRef } from 'react'
+import { AnimationContent, Background, Content, Style } from './styles'
+
+import getValidationErrors from 'utils/getValidationErrors'
+
 import logo from 'assets/logo.svg'
-import * as Yup from 'yup'
+
 import Button from 'components/Button'
 import Input from 'components/Input'
-import { Form } from '@unform/web'
+
 import { FormHandles } from '@unform/core'
-import { FiLogIn, FiLock, FiMail } from 'react-icons/fi'
-import getValidationErrors from 'utils/getValidationErrors'
+import { Form } from '@unform/web'
 import { useAuth } from 'hooks/Auth'
 import { useToast } from 'hooks/Toast'
+import { FiLock, FiLogIn, FiMail } from 'react-icons/fi'
 import { Link, useHistory } from 'react-router-dom'
-import { Style, Content, Background, AnimationContent } from './styles'
+import * as Yup from 'yup'
 
 interface LoginData {
   email: string
@@ -29,9 +33,7 @@ const Login: React.FC = () => {
         formRef.current?.setErrors({})
 
         const schema = Yup.object().shape({
-          email: Yup.string()
-            .email('Digite um email válido')
-            .required('Email obrigatório'),
+          email: Yup.string().email('Digite um email válido').required('Email obrigatório'),
           password: Yup.string().required('Senha obrigatória'),
         })
 
@@ -71,12 +73,7 @@ const Login: React.FC = () => {
             <h1>Faça seu logon</h1>
 
             <Input name='email' placeholder='E-mail' icon={FiMail} />
-            <Input
-              name='password'
-              type='password'
-              placeholder='Senha'
-              icon={FiLock}
-            />
+            <Input name='password' type='password' placeholder='Senha' icon={FiLock} />
 
             <Button type='submit'>Entrar</Button>
             <a href='forgot'>Esqueci minha senha</a>

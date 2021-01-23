@@ -1,7 +1,10 @@
 import React from 'react'
+
 import GlobalStyle from 'styles/GlobalStyles'
-import GlobalProvider from 'hooks'
+
 import Routes from 'routes'
+
+import GlobalProvider from 'hooks'
 
 const App: React.FC = () => (
   <>

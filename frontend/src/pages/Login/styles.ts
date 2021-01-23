@@ -1,6 +1,7 @@
-import styled, { keyframes } from 'styled-components'
 import signInBackgroundImg from 'assets/sign-in-background.png'
+
 import { shade } from 'polished'
+import styled, { keyframes } from 'styled-components'
 
 const appearFromLeft = keyframes`
   from{
